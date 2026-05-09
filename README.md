@@ -40,8 +40,15 @@ It does two things:
 
 Add these repository secrets in GitHub:
 
-- `DOCKERHUB_USERNAME`: your Docker Hub username
+- `DOCKERHUB_USERNAME`: `hirushi97`
 - `DOCKERHUB_TOKEN`: a Docker Hub access token
+
+The pushed Docker image will be available as:
+
+```bash
+docker pull hirushi97/nextjs-cicd-lab:latest
+docker run --rm -p 3000:3000 hirushi97/nextjs-cicd-lab:latest
+```
 
 ## First GitHub Push
 
