@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js CI/CD Lab
 
-## Getting Started
+This is a small Next.js project for learning CI/CD with GitHub Actions and Docker Hub.
 
-First, run the development server:
+## Local Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Run the same checks that GitHub Actions will run:
 
-## Learn More
+```bash
+npm run lint
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Build Docker Image Locally
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Replace `your-dockerhub-name` with your Docker Hub username.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+docker build -t your-dockerhub-name/nextjs-cicd-lab:local .
+docker run --rm -p 3000:3000 your-dockerhub-name/nextjs-cicd-lab:local
+```
 
-## Deploy on Vercel
+## GitHub Actions Setup
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The workflow is in `.github/workflows/ci-cd.yml`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+It does two things:
+
+1. On pull requests and pushes to `main`, it runs `npm ci`, `npm run lint`, and `npm run build`.
+2. On pushes to `main`, it builds a Docker image and pushes it to Docker Hub.
+
+Add these repository secrets in GitHub:
+
+- `DOCKERHUB_USERNAME`: your Docker Hub username
+- `DOCKERHUB_TOKEN`: a Docker Hub access token
+
+## First GitHub Push
+
+```bash
+git init
+git add .
+git commit -m "Create Next.js CI/CD lab"
+git branch -M main
+git remote add origin https://github.com/YOUR_GITHUB_USERNAME/nextjs-cicd-lab.git
+git push -u origin main
+```
+
+After that, every push to `main` will run CI and push a new Docker image to Docker Hub.
