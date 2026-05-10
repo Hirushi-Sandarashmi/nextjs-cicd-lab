@@ -43,6 +43,9 @@ Add these repository secrets in GitHub:
 - `DOCKERHUB_USERNAME`: `hirushi97`
 - `DOCKERHUB_TOKEN`: a Docker Hub access token
 
+The project includes `.env.example` only as a local reference for the secret
+names. Do not commit a real `.env` file or your real Docker Hub token.
+
 The pushed Docker image will be available as:
 
 ```bash
